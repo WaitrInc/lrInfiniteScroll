@@ -1,6 +1,6 @@
 {
   "name": "lr-infinite-scroll",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Directive to register handler when an element is scrolled down near its end",
   "browser": "index.js",
   "repository": {
