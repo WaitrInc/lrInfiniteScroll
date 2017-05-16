@@ -26,7 +26,8 @@
                     handlerTop = ng.noop;
                 }
 
-                element.bind('scroll', function () {
+                element.bind('scroll DOMMouseScroll mousewheel', function (event) {
+                  
                     var
                         remaining = element[0].scrollHeight - (element[0].clientHeight + element[0].scrollTop),
                         top = element[0].scrollTop;
@@ -54,10 +55,19 @@
                             handlerTop();
                             promise = null;
                         }, timeThreshold);
+
+                        // If we scroll above the top we should reset back to just above 0
+                        if(top <= 0){
+                            element[0].scrollTop = 1;
+                            event.stopPropagation();
+                            event.preventDefault();
+                            event.returnValue = false;
+                        }
                     }
 
                     lastRemaining = remaining;
                     lastTop = top;
+                  
                 });
             }
 
