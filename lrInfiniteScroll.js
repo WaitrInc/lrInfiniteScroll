@@ -27,6 +27,7 @@
                 }
 
                 element.bind('scroll DOMMouseScroll mousewheel', function (event) {
+                  
                     var
                         remaining = element[0].scrollHeight - (element[0].clientHeight + element[0].scrollTop),
                         top = element[0].scrollTop;
@@ -66,7 +67,7 @@
 
                     lastRemaining = remaining;
                     lastTop = top;
-                    
+                  
                 });
             }
 
