@@ -16,6 +16,7 @@
                     lastTop = 0;
 
                 lengthThreshold = parseInt(lengthThreshold, 10);
+                topLengthThreshold = parseInt(topLengthThreshold, 10);
                 timeThreshold = parseInt(timeThreshold, 10);
 
                 if (!handler || !ng.isFunction(handler)) {
@@ -33,7 +34,7 @@
                         top = element[0].scrollTop;
 
                     //if we have reached the threshold and we scroll down
-                    if (remaining < lengthThreshold && (remaining - lastRemaining) < 0) {
+                    if (remaining < lengthThreshold && remaining < lastRemaining ) {
 
                         //if there is already a timer running which has no expired yet we have to cancel it and restart the timer
                         if (promise !== null) {
@@ -43,6 +44,12 @@
                             handler();
                             promise = null;
                         }, timeThreshold);
+
+                        // If we scroll below the bottom we should reset back to just above what we're looking for
+                        if(remaining <= 0){
+                            element[0].scrollTop = element[0].scrollHeight - element[0].clientHeight - 1;
+                            event.preventDefault();
+                        }
                     }
 
                     //if we have reached the threshold and we scroll up
@@ -59,9 +66,7 @@
                         // If we scroll above the top we should reset back to just above 0
                         if(top <= 0){
                             element[0].scrollTop = 1;
-                            event.stopPropagation();
                             event.preventDefault();
-                            event.returnValue = false;
                         }
                     }
 
