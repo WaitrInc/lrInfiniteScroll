@@ -48,6 +48,7 @@
                         // If we scroll below the bottom we should reset back to just above what we're looking for
                         if(remaining <= 0){
                             element[0].scrollTop = element[0].scrollHeight - element[0].clientHeight - 1;
+                            event.stopPropagation();
                             event.preventDefault();
                         }
                     }
@@ -59,15 +60,17 @@
                             timeout.cancel(promise);
                         }
                         promise = timeout(function () {
-                            handlerTop();
+                            // If we scroll above the top we should reset back to just above 0
+                            if(top <= 0){
+                                if(handlerTop()){
+                                    element[0].scrollTop = topLengthThreshold + 1;
+                                }
+                                event.stopPropagation();
+                                event.preventDefault();
+                            }
                             promise = null;
                         }, timeThreshold);
 
-                        // If we scroll above the top we should reset back to just above 0
-                        if(top <= 0){
-                            element[0].scrollTop = 1;
-                            event.preventDefault();
-                        }
                     }
 
                     lastRemaining = remaining;
